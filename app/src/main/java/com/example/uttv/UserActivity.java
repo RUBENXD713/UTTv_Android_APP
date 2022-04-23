@@ -48,10 +48,6 @@ public class UserActivity extends AppCompatActivity {
         });
     }
 
-    private void setPermiso() {
-        //
-    }
-
     /*private void logout() {
         Intent intent = new Intent(UserActivity.this, activity_login.class);
         startActivity(intent);
@@ -132,4 +128,36 @@ public class UserActivity extends AppCompatActivity {
             }
         }).start();
     }
+
+
+
+
+
+    private void setPermiso(){
+        String url = getString(R.string.api_server)+"us/login3";
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Http http = new Http(UserActivity.this,url);
+                http.setMethod("post");
+                http.setToken(true);
+                http.send();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run(){
+                        Integer code = http.getStatusCode();
+                        if (code == 200){
+                            Toast.makeText(UserActivity.this,"Permisos actualizados",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(UserActivity.this,"Error "+code,Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
+
+
+
 }
